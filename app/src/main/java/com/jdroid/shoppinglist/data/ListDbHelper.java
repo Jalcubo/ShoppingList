@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.jdroid.shoppinglist.data.ListContract.ItemEntry;
 import com.jdroid.shoppinglist.data.ListContract.ListEntry;
+import com.jdroid.shoppinglist.data.ListContract.ItemEntry;
 
 /**
  * Created by JoséDaniel on 15/08/2014.
@@ -26,10 +26,10 @@ public class ListDbHelper extends SQLiteOpenHelper{
         final String SQL_CREATE_LIST_TABLE =
                 "CREATE TABLE " + ListEntry.TABLE_NAME + " (" +
 
-                        ListEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        ListEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
                         ListEntry.COLUMN_NAME + " TEXT NOT NULL, " +
-                        ListEntry.COLUMN_DATETEXT + " TEXT NOT NULL, );";
+                        ListEntry.COLUMN_DATETEXT + " TEXT NOT NULL );";
 
         final String SQL_CREATE_ITEM_TABLE =
                 "CREATE TABLE " + ItemEntry.TABLE_NAME + " (" +
@@ -40,8 +40,11 @@ public class ListDbHelper extends SQLiteOpenHelper{
                         ItemEntry.COLUMN_QUANTITY + " REAL NOT NULL, " +
                         ItemEntry.COLUMN_MEASURE + "TEXT NOT NULL," +
 
-                        " FOREIGN KEY (" + ItemEntry.COLUMN_LIST_KEY + ") REFERENCES " +
-                        ListEntry.TABLE_NAME + " (" + ListEntry._ID +"));";
+                        " FOREIGN KEY (" + ListEntry._ID + ") REFERENCES " +
+                        ListEntry.TABLE_NAME + " (" + ItemEntry.COLUMN_LIST_KEY +"));";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_LIST_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_ITEM_TABLE);
 
     }
 

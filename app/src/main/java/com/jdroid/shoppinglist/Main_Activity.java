@@ -1,7 +1,8 @@
 package com.jdroid.shoppinglist;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -28,7 +29,20 @@ public class Main_Activity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_add_list) {
+            /*
+            Toast.makeText(this,"Holaaaaaaa!", Toast.LENGTH_SHORT).show();
+            ContentValues listValues = new ContentValues();
+            listValues.put(ListContract.ListEntry.COLUMN_NAME, "lista de la compra2");
+            listValues.put(ListContract.ListEntry.COLUMN_DATETEXT, "20140816");
+
+            Uri listInsertUri = this.getContentResolver().insert(ListContract.ListEntry.CONTENT_URI, listValues);*/
+
+            Intent i = new Intent(this,AddList.class);
+            startActivity(i);
+
+
+
             return true;
         }
         return super.onOptionsItemSelected(item);

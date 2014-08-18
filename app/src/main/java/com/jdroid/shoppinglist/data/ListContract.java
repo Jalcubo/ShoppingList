@@ -39,6 +39,10 @@ public class ListContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+        public static Uri ListUri(){
+            return CONTENT_URI;
+        }
+
 
 
 

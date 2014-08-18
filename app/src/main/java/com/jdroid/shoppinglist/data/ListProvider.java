@@ -6,11 +6,15 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
+
+
 
 /**
  * Created by JoséDaniel on 15/08/2014.
  */
 public class ListProvider extends ContentProvider{
+    private final String LOG_TAG = getClass().getSimpleName();
 
     private static final int LIST = 100;
     private static final int ITEM = 200;
@@ -46,6 +50,7 @@ public class ListProvider extends ContentProvider{
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         Cursor retCursor;
+        Log.v(LOG_TAG, sUriMatcher.match(uri) + "");
         switch (sUriMatcher.match(uri)){
             case LIST: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
