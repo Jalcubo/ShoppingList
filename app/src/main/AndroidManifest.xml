@@ -26,10 +26,18 @@
         <activity
             android:name=".AddList"
             android:label="@string/title_activity_add_list"
-            android:parentActivityName=".Main_Activity">
+            android:parentActivityName=".Main_Activity" >
             <meta-data
                 android:name="android:support.PARENT_ACTIVITY"
-                android:value="com.jdroid.shoppinglist.Main_Activity"/>
+                android:value="com.jdroid.shoppinglist.Main_Activity" />
+        </activity>
+        <activity
+            android:name=".DetailList"
+            android:label="@string/title_activity_detail_list"
+            android:parentActivityName=".Main_Activity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jdroid.shoppinglist.Main_Activity" />
         </activity>
     </application>
 

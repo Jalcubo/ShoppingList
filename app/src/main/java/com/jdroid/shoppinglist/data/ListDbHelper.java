@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.jdroid.shoppinglist.data.ListContract.ListEntry;
 import com.jdroid.shoppinglist.data.ListContract.ItemEntry;
+import com.jdroid.shoppinglist.data.ListContract.ListEntry;
 
 /**
  * Created by JoséDaniel on 15/08/2014.
@@ -38,10 +38,11 @@ public class ListDbHelper extends SQLiteOpenHelper{
 
                         ItemEntry.COLUMN_NAME + " TEXT NOT NULL, " +
                         ItemEntry.COLUMN_QUANTITY + " REAL NOT NULL, " +
-                        ItemEntry.COLUMN_MEASURE + "TEXT NOT NULL," +
+                        ItemEntry.COLUMN_MEASURE + " TEXT NOT NULL," +
+                        ItemEntry.COLUMN_LIST_KEY + " INTEGER NOT NULL," +
 
-                        " FOREIGN KEY (" + ListEntry._ID + ") REFERENCES " +
-                        ListEntry.TABLE_NAME + " (" + ItemEntry.COLUMN_LIST_KEY +"));";
+                        " FOREIGN KEY (" + ItemEntry.COLUMN_LIST_KEY + ") REFERENCES " +
+                        ListEntry.TABLE_NAME + " (" + ListEntry._ID +"));";
 
         sqLiteDatabase.execSQL(SQL_CREATE_LIST_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_ITEM_TABLE);

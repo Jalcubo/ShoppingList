@@ -1,5 +1,6 @@
 package com.jdroid.shoppinglist;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -81,12 +82,17 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = mListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    Toast.makeText(getActivity(),cursor.getString(COL_LIST_NAME),Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getActivity(),cursor.getString(COL_LIST_ID),Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getActivity(), DetailList.class);
+                    i.putExtra("LIST_ID",cursor.getString(COL_LIST_ID));
+                    i.putExtra("LIST_NAME",cursor.getString(COL_LIST_NAME));
+                    startActivity(i);
+                    /*
                     int listInsertUri = getActivity().getContentResolver().delete(
                             ListEntry.CONTENT_URI,
                             ListEntry._ID + "= ?",
-                            new String [] {cursor.getString(COL_LIST_ID)});
+                            new String [] {cursor.getString(COL_LIST_ID)});*/
+
 
                     onResume();
                 }

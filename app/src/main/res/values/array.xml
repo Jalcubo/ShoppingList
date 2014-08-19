@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="measures_types">
+        <item>Units</item>
+        <item>grams</item>
+        <item>Kg</item>
+        <item>L</item>
+
+    </string-array>
+
+</resources>
