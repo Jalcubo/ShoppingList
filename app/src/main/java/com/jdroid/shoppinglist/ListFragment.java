@@ -30,7 +30,6 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
     private ListAdapter mListAdapter;
 
     private final String LOG_TAG = getClass().getSimpleName();
-
     private int mPosition = ListView.INVALID_POSITION;
 
 
@@ -44,6 +43,7 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
     public static final int COL_LIST_ID = 0;
     public static final int COL_LIST_NAME = 1;
     public static final int COL_LIST_DATE = 2;
+
 
     public ListFragment() {
     }

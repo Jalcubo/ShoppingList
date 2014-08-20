@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.util.Log;
 
 
-
 /**
  * Created by JoséDaniel on 15/08/2014.
  */
@@ -18,6 +17,7 @@ public class ListProvider extends ContentProvider{
 
     private static final int LIST = 100;
     private static final int ITEM = 200;
+    private static final int ITEM_BY_LIST = 201;
 
     private ListDbHelper mOpenHelper;
 
@@ -35,6 +35,8 @@ public class ListProvider extends ContentProvider{
 
 
         matcher.addURI(authority, ListContract.PATH_ITEM, ITEM);
+
+        matcher.addURI(authority, ListContract.PATH_ITEM + "/*", ITEM_BY_LIST);
 
 
         return matcher;
@@ -76,11 +78,33 @@ public class ListProvider extends ContentProvider{
                 );
                 break;
             }
+            case ITEM_BY_LIST: {
+                retCursor = getItemsByList(uri,projection,sortOrder);
+                break;
+            }
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
         //retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
+    }
+
+    private Cursor getItemsByList(Uri uri, String[] projection, String sortOrder) {
+        String selection = ListContract.ItemEntry.COLUMN_LIST_KEY + " = ? ";
+        String list_id =  ListContract.ItemEntry.getListIdFromUriItem(uri);
+
+        String[] selectionArgs = new String[] {list_id};
+
+        return mOpenHelper.getReadableDatabase().query(
+                ListContract.ItemEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
     }
 
     @Override
@@ -91,6 +115,8 @@ public class ListProvider extends ContentProvider{
             case LIST:
                 return ListContract.ListEntry.CONTENT_TYPE;
             case ITEM:
+                return ListContract.ItemEntry.CONTENT_TYPE;
+            case ITEM_BY_LIST:
                 return ListContract.ItemEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

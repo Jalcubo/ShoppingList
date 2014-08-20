@@ -17,5 +17,6 @@
     <string name="item_quantity">Quantity?</string>
     <string name="title_activity_my">MyActivity</string>
     <string name="title_activity_detail_list">DetailList</string>
+    <string name="action_share">Share</string>
 
 </resources>

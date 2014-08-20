@@ -73,6 +73,16 @@ public class ListContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+        public static final Uri buildItemByListId (String id){
+            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_LIST_KEY, id).build();
+
+        }
+
+
+        public static final String getListIdFromUriItem(Uri uri){
+            return uri.getQueryParameter(COLUMN_LIST_KEY);
+        }
+
 
 
 
