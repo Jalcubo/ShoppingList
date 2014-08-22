@@ -53,7 +53,8 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
             ListContract.ItemEntry.TABLE_NAME + "." + ListContract.ItemEntry._ID,
             ListContract.ItemEntry.COLUMN_NAME,
             ListContract.ItemEntry.COLUMN_QUANTITY,
-            ListContract.ItemEntry.COLUMN_MEASURE
+            ListContract.ItemEntry.COLUMN_MEASURE,
+            ListContract.ItemEntry.COLUMN_LIST_KEY
 
     };
 
@@ -61,6 +62,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     public static final int COL_ITEM_NAME = 1;
     public static final int COL_ITEM_QUANTITY = 2;
     public static final int COL_ITEM_MEASURE = 3;
+    public static final int COL_ITEM_LIST_KEY = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +96,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
                         view.setBackground(null);
                         count--;
                     }
-                    Toast.makeText(getApplicationContext(),count +"",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),count+"",Toast.LENGTH_SHORT).show();
                     mCustomProgressView.setPercentage(getPercentage(count,list_size));
 
 

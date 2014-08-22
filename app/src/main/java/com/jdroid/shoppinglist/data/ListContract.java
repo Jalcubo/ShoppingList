@@ -74,7 +74,7 @@ public class ListContract {
         }
 
         public static final Uri buildItemByListId (String id){
-            return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_LIST_KEY, id).build();
+            return CONTENT_URI.buildUpon().appendPath("list").appendQueryParameter(COLUMN_LIST_KEY, id).build();
 
         }
 

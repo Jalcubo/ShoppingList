@@ -17,7 +17,7 @@ public class ListProvider extends ContentProvider{
 
     private static final int LIST = 100;
     private static final int ITEM = 200;
-    private static final int ITEM_BY_LIST = 201;
+    private static final int ITEM_BY_LIST = 300;
 
     private ListDbHelper mOpenHelper;
 
@@ -25,18 +25,15 @@ public class ListProvider extends ContentProvider{
 
 
     private static UriMatcher buildUriMatcher(){
-
-
-
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = ListContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, ListContract.PATH_LIST, LIST);
 
-
+        matcher.addURI(authority, ListContract.PATH_ITEM + "/*", ITEM_BY_LIST);
         matcher.addURI(authority, ListContract.PATH_ITEM, ITEM);
 
-        matcher.addURI(authority, ListContract.PATH_ITEM + "/*", ITEM_BY_LIST);
+
 
 
         return matcher;
@@ -66,6 +63,10 @@ public class ListProvider extends ContentProvider{
                 );
                 break;
             }
+            case ITEM_BY_LIST: {
+                retCursor = getItemsByList(uri,projection,sortOrder);
+                break;
+            }
             case ITEM: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         ListContract.ItemEntry.TABLE_NAME,
@@ -78,10 +79,7 @@ public class ListProvider extends ContentProvider{
                 );
                 break;
             }
-            case ITEM_BY_LIST: {
-                retCursor = getItemsByList(uri,projection,sortOrder);
-                break;
-            }
+
 
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
