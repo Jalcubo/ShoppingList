@@ -2,16 +2,18 @@ package com.jdroid.shoppinglist;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.CursorAdapter;
 import android.widget.TextView;
 
 /**
  * Created by JoséDaniel on 20/08/2014.
  */
 public class DetailListAdapter  extends CursorAdapter{
+
+
 
     public DetailListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -50,9 +52,14 @@ public class DetailListAdapter  extends CursorAdapter{
         String quantity = cursor.getString(DetailList.COL_ITEM_QUANTITY);
         String measure = cursor.getString(DetailList.COL_ITEM_MEASURE);
 
+
+
+
+
         viewHolder.name_tv.setText(name);
         viewHolder.quantity_tv.setText(quantity);
         viewHolder.measure_tv.setText(measure);
 
     }
+
 }

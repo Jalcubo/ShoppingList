@@ -36,7 +36,12 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
     private static String list_id = null;
 
+    String shareList;
+
+    private CustomProgressView mCustomProgressView;
+
     private static int count = 0;
+    private static int list_size = 0;
 
     public interface Callback {
 
@@ -90,6 +95,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
                         count--;
                     }
                     Toast.makeText(getApplicationContext(),count +"",Toast.LENGTH_SHORT).show();
+                    mCustomProgressView.setPercentage(getPercentage(count,list_size));
 
 
                     /*int itemDeleteUri = getContentResolver().delete(
@@ -99,12 +105,13 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
                 }
 
-
-
             }
         });
 
 
+
+        mCustomProgressView = (CustomProgressView) findViewById(R.id.custom_progress_bar);
+        mCustomProgressView.setPercentage(getPercentage(count,list_size));
 
 
     }
@@ -121,7 +128,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
 
         if (mShareActionProvider != null ) {
-            mShareActionProvider.setShareIntent(createShareListIntent("holaaaaaa"));
+            mShareActionProvider.setShareIntent(createShareListIntent(shareList));
         } else {
             Log.d(LOG_TAG, "Share Action Provider is null?");
         }
@@ -156,10 +163,22 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDetailListAdapter.swapCursor(data);
+        list_size = data.getCount();
+        shareList= "   " + getIntent().getStringExtra("LIST_NAME") + "\r\n------------------ \r\n";
+        for (int i = 0; i < list_size; i++){
+            data.moveToPosition(i);
+            String name = data.getString(COL_ITEM_NAME);
+            String quantity = data.getString(COL_ITEM_QUANTITY);
+            String measure = data.getString(COL_ITEM_MEASURE);
+            shareList = shareList + name + " x" + quantity + " " + measure +"\r\n";
+
+        }
+
+        //mCustomProgressView.setPercentage(200);
 
 
 
-    }
+     }
 
     private Intent createShareListIntent(String text) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -172,6 +191,17 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mDetailListAdapter.swapCursor(null);
+
+    }
+
+    public int getPercentage(int c, int total){
+        if (total != 0){
+            return (c*100)/total;
+
+        }else {
+            return 0;
+        }
+
 
     }
 }
