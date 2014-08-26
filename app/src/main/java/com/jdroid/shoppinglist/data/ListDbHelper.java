@@ -40,6 +40,7 @@ public class ListDbHelper extends SQLiteOpenHelper{
                         ItemEntry.COLUMN_QUANTITY + " REAL NOT NULL, " +
                         ItemEntry.COLUMN_MEASURE + " TEXT NOT NULL," +
                         ItemEntry.COLUMN_LIST_KEY + " INTEGER NOT NULL," +
+                        ItemEntry.COLUMN_CHECK + " INTEGER NOT NULL," +
 
                         " FOREIGN KEY (" + ItemEntry.COLUMN_LIST_KEY + ") REFERENCES " +
                         ListEntry.TABLE_NAME + " (" + ListEntry._ID +"));";

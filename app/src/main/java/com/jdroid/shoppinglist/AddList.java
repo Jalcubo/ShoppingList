@@ -100,6 +100,7 @@ public class AddList extends ActionBarActivity{
                 itemValues.put(ListContract.ItemEntry.COLUMN_NAME, data_temp.get(x).get("name"));
                 itemValues.put(ListContract.ItemEntry.COLUMN_QUANTITY, data_temp.get(x).get("quantity"));
                 itemValues.put(ListContract.ItemEntry.COLUMN_MEASURE, data_temp.get(x).get("measure"));
+                itemValues.put(ListContract.ItemEntry.COLUMN_CHECK,0);
                 this.getContentResolver().insert(ListContract.ItemEntry.CONTENT_URI, itemValues);
 
             }

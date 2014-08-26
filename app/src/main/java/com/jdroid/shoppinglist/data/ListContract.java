@@ -68,6 +68,8 @@ public class ListContract {
 
         public static final String COLUMN_LIST_KEY = "list_key";
 
+        public static final String COLUMN_CHECK = "checked";
+
 
         public  static Uri buildItemUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

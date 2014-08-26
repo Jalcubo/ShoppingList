@@ -6,6 +6,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 /**
@@ -23,12 +24,14 @@ public class DetailListAdapter  extends CursorAdapter{
         public final TextView name_tv;
         public final TextView quantity_tv;
         public final TextView measure_tv;
+        public final CheckBox check_box;
 
 
         public ViewHolder(View view) {
             name_tv = (TextView) view.findViewById(R.id.detail_item_list_name);
             quantity_tv = (TextView) view.findViewById(R.id.detail_item_list_quantity);
             measure_tv = (TextView) view.findViewById(R.id.detail_item_list_measure);
+            check_box = (CheckBox) view.findViewById(R.id.checkbox_element);
         }
     }
 
@@ -44,18 +47,22 @@ public class DetailListAdapter  extends CursorAdapter{
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
 
-        ViewHolder viewHolder = (ViewHolder) view.getTag();
+        final ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         String name = cursor.getString(DetailList.COL_ITEM_NAME);
         String quantity = cursor.getString(DetailList.COL_ITEM_QUANTITY);
         String measure = cursor.getString(DetailList.COL_ITEM_MEASURE);
+        int check = cursor.getInt(DetailList.COL_ITEM_CHECK);
 
 
-
-
-
+        viewHolder.check_box.setTag(cursor.getString(DetailList.COL_ITEM_ID));
+        if (check == 1){
+            viewHolder.check_box.setChecked(true);
+        }else{
+            viewHolder.check_box.setChecked(false);
+        }
         viewHolder.name_tv.setText(name);
         viewHolder.quantity_tv.setText(quantity);
         viewHolder.measure_tv.setText(measure);

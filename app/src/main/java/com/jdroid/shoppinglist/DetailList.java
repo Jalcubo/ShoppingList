@@ -1,5 +1,6 @@
 package com.jdroid.shoppinglist;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,7 +42,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
     private CustomProgressView mCustomProgressView;
 
-    private static int count = 0;
+    public static int count = 0;
     private static int list_size = 0;
 
     public interface Callback {
@@ -54,7 +56,8 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
             ListContract.ItemEntry.COLUMN_NAME,
             ListContract.ItemEntry.COLUMN_QUANTITY,
             ListContract.ItemEntry.COLUMN_MEASURE,
-            ListContract.ItemEntry.COLUMN_LIST_KEY
+            ListContract.ItemEntry.COLUMN_LIST_KEY,
+            ListContract.ItemEntry.COLUMN_CHECK
 
     };
 
@@ -63,6 +66,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     public static final int COL_ITEM_QUANTITY = 2;
     public static final int COL_ITEM_MEASURE = 3;
     public static final int COL_ITEM_LIST_KEY = 4;
+    public static final int COL_ITEM_CHECK = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
         mDetailListAdapter =new DetailListAdapter(this,null,0);
 
+
         ListView lv = (ListView) findViewById(R.id.lv_items);
         lv.setAdapter(mDetailListAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,18 +91,36 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
                 Cursor cursor = mDetailListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
 
+                    CheckBox check_box = (CheckBox) view.findViewById(R.id.checkbox_element);
 
 
-                    if (view.getBackground() == null ){
-                        view.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+                    ContentValues itemValues = new ContentValues();
+                    itemValues.put(ListContract.ItemEntry.COLUMN_LIST_KEY, cursor.getString(COL_ITEM_LIST_KEY));
+                    itemValues.put(ListContract.ItemEntry.COLUMN_NAME, cursor.getString(COL_ITEM_NAME));
+                    itemValues.put(ListContract.ItemEntry.COLUMN_QUANTITY, cursor.getString(COL_ITEM_QUANTITY));
+                    itemValues.put(ListContract.ItemEntry.COLUMN_MEASURE, cursor.getString(COL_ITEM_MEASURE));
+
+                    if (!check_box.isChecked()) {
+                        itemValues.put(ListContract.ItemEntry.COLUMN_CHECK, 1);
+                        check_box.setChecked(true);
                         count++;
 
-                    }else{
-                        view.setBackground(null);
+                    } else {
+                        itemValues.put(ListContract.ItemEntry.COLUMN_CHECK, 0);
+                        check_box.setChecked(false);
                         count--;
                     }
-                    Toast.makeText(getApplicationContext(),count+"",Toast.LENGTH_SHORT).show();
-                    mCustomProgressView.setPercentage(getPercentage(count,list_size));
+                    getContentResolver().update(
+                            ListContract.ItemEntry.CONTENT_URI, itemValues,
+                            ListContract.ItemEntry._ID + "= ?",
+                            new String[]{cursor.getString(COL_ITEM_ID)});
+                    Toast.makeText(getApplicationContext(), cursor.getInt(COL_ITEM_CHECK) + "", Toast.LENGTH_SHORT).show();
+                    mCustomProgressView.setPercentage(getPercentage(count, list_size));
+                    view.destroyDrawingCache();
+                    view.setVisibility(ListView.INVISIBLE);
+                    view.setVisibility(ListView.VISIBLE);
+
+
 
 
                     /*int itemDeleteUri = getContentResolver().delete(
@@ -116,6 +139,11 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         mCustomProgressView.setPercentage(getPercentage(count,list_size));
 
 
+    }
+
+    public void  updateData(){
+        mCustomProgressView.setPercentage(getPercentage(count,list_size));
+        mDetailListAdapter.notifyDataSetChanged();
     }
 
 
@@ -166,17 +194,20 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDetailListAdapter.swapCursor(data);
         list_size = data.getCount();
+        count = 0;
         shareList= "   " + getIntent().getStringExtra("LIST_NAME") + "\r\n------------------ \r\n";
         for (int i = 0; i < list_size; i++){
             data.moveToPosition(i);
             String name = data.getString(COL_ITEM_NAME);
             String quantity = data.getString(COL_ITEM_QUANTITY);
             String measure = data.getString(COL_ITEM_MEASURE);
+            if (data.getInt(COL_ITEM_CHECK) == 1){
+                count ++;
+            }
             shareList = shareList + name + " x" + quantity + " " + measure +"\r\n";
 
         }
-
-        //mCustomProgressView.setPercentage(200);
+        mCustomProgressView.setPercentage(getPercentage(count,list_size));
 
 
 
