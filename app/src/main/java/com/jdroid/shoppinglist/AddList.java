@@ -46,17 +46,27 @@ public class AddList extends ActionBarActivity{
 
         lv = (ListView) findViewById(R.id.temp_listview);
         lv.setEmptyView(findViewById(R.id.temp_empty_list_view));
+
+
+
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                Toast.makeText(getApplicationContext(),"Deleted!",Toast.LENGTH_LONG).show();
+                if ( view.getId() == R.id.del_btn){
+                    Toast.makeText(getApplicationContext(),"Deleted!",Toast.LENGTH_LONG).show();
 
-                data_temp.remove(position);
-                mAddListAdapter.notifyDataSetChanged();
+                    data_temp.remove(position);
+                    mAddListAdapter.notifyDataSetChanged();
+
+                }
+
 
             }
         });
+
+
 
         mAddListAdapter = new AddListAdapter(this,data_temp);
         lv.setAdapter(mAddListAdapter);

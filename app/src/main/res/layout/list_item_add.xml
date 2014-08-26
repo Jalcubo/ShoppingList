@@ -2,7 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,5 +28,23 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/add_item_list_measure" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/del_btn"
+            android:focusable="false"
+            android:src="@drawable/ic_action_remove"
+            android:background="@null"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
+
+
 
 </LinearLayout>

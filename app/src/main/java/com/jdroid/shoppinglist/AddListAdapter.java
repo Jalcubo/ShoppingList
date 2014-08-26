@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -38,7 +40,7 @@ public class AddListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent) {
+    public View getView(final int position, View view, final ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.list_item_add, parent, false);
@@ -49,6 +51,17 @@ public class AddListAdapter extends BaseAdapter {
         viewHolder.quantity_tv.setText(values.get(position).get("quantity"));
         viewHolder.measure_tv.setText(values.get(position).get("measure"));
 
+        viewHolder.del_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((ListView) parent).performItemClick(view, position, 0);
+            }
+        });
+
+
+
+
+
         return rowView;
     }
 
@@ -56,12 +69,14 @@ public class AddListAdapter extends BaseAdapter {
         public final TextView name_tv;
         public final TextView quantity_tv;
         public final TextView measure_tv;
+        public final ImageButton del_btn;
 
 
         public ViewHolder(View view) {
             name_tv = (TextView) view.findViewById(R.id.add_item_list_name);
             quantity_tv = (TextView) view.findViewById(R.id.add_item_list_quantity);
             measure_tv = (TextView) view.findViewById(R.id.add_item_list_measure);
+            del_btn = (ImageButton) view.findViewById(R.id.del_btn);
         }
     }
 
