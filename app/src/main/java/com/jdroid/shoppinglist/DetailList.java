@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -18,9 +19,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.jdroid.shoppinglist.data.ListContract;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 ;
 
@@ -74,6 +79,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         super.onCreate(savedInstanceState);
 
 
+
         setContentView(R.layout.activity_detail_list);
 
         list_id = getIntent().getStringExtra("LIST_ID");
@@ -81,7 +87,6 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         setTitle(getIntent().getStringExtra("LIST_NAME"));
 
         mDetailListAdapter =new DetailListAdapter(this,null,0);
-
 
         ListView lv = (ListView) findViewById(R.id.lv_items);
         lv.setAdapter(mDetailListAdapter);
@@ -141,6 +146,16 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+    }
+
+
+
+
+
     public void  updateData(){
         mCustomProgressView.setPercentage(getPercentage(count,list_size));
         mDetailListAdapter.notifyDataSetChanged();
@@ -171,6 +186,41 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar1);
+
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_reset:
+                spinner.setVisibility(View.VISIBLE);
+                new Timer().schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                new ResetCheckTask().execute();
+
+                            }
+                        },
+                        1000
+                );
+                break;
+            case R.id.action_delete:
+
+                spinner = (ProgressBar) findViewById(R.id.progressBar1);
+                spinner.setVisibility(View.VISIBLE);
+                new Timer().schedule(
+                        new TimerTask() {
+                            @Override
+                            public void run() {
+                                new DeleteListTask().execute();
+
+                            }
+                        },
+                        1000
+                );
+                break;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -234,6 +284,99 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         }else {
             return 0;
         }
+
+
+    }
+
+    private class ResetCheckTask extends AsyncTask<Void, Void, Cursor> {
+        protected void onPostExecute(Cursor c) {
+
+
+            count = 0;
+            mCustomProgressView.setPercentage(getPercentage(count, list_size));
+            mDetailListAdapter.notifyDataSetChanged();
+            ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar1);
+            spinner.setVisibility(View.GONE);
+            onResume();
+
+            Toast.makeText(getApplicationContext(),"Reset!", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            Cursor c = mDetailListAdapter.getCursor();
+
+
+
+            int c_size = c.getCount();
+
+            for (int i = 0; i < c_size; i++){
+                c.moveToPosition(i);
+                ContentValues itemValues = new ContentValues();
+                itemValues.put(ListContract.ItemEntry.COLUMN_LIST_KEY, c.getString(COL_ITEM_LIST_KEY));
+                itemValues.put(ListContract.ItemEntry.COLUMN_NAME, c.getString(COL_ITEM_NAME));
+                itemValues.put(ListContract.ItemEntry.COLUMN_QUANTITY, c.getString(COL_ITEM_QUANTITY));
+                itemValues.put(ListContract.ItemEntry.COLUMN_MEASURE, c.getString(COL_ITEM_MEASURE));
+                itemValues.put(ListContract.ItemEntry.COLUMN_CHECK, 0);
+
+                getContentResolver().update(
+                        ListContract.ItemEntry.CONTENT_URI, itemValues,
+                        ListContract.ItemEntry._ID + "= ?",
+                        new String[]{c.getString(COL_ITEM_ID)});
+
+
+
+
+
+            }
+
+            return c;
+        }
+    }
+
+    private class DeleteListTask extends  AsyncTask<Void,Void,Integer>{
+
+
+        protected void onPostExecute(Integer i) {
+            Toast.makeText(getApplicationContext(),"Delete!", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+
+            Cursor c = mDetailListAdapter.getCursor();
+            int c_size = c.getCount();
+
+            for (int i = 0; i < c_size; i++){
+                c.moveToPosition(i);
+                ContentValues itemValues = new ContentValues();
+                itemValues.put(ListContract.ItemEntry.COLUMN_LIST_KEY, c.getString(COL_ITEM_LIST_KEY));
+                itemValues.put(ListContract.ItemEntry.COLUMN_NAME, c.getString(COL_ITEM_NAME));
+                itemValues.put(ListContract.ItemEntry.COLUMN_QUANTITY, c.getString(COL_ITEM_QUANTITY));
+                itemValues.put(ListContract.ItemEntry.COLUMN_MEASURE, c.getString(COL_ITEM_MEASURE));
+                itemValues.put(ListContract.ItemEntry.COLUMN_CHECK, 0);
+
+                getContentResolver().delete(
+                        ListContract.ItemEntry.CONTENT_URI,
+                        ListContract.ItemEntry._ID + "= ?",
+                        new String [] {c.getString(COL_ITEM_ID)});
+
+
+            }
+
+
+
+            return getContentResolver().delete(
+                    ListContract.ListEntry.CONTENT_URI,
+                    ListContract.ListEntry._ID + "= ?",
+                    new String [] {list_id});
+        }
+
+
 
 
     }

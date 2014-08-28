@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".Main_Activity" >
     <item android:id="@+id/action_add_list"
-        android:title="@string/action_list"
-        android:icon="@drawable/ic_action_new"
-        app:showAsAction="ifRoom" />
+    android:title="@string/action_list"
+    android:icon="@drawable/ic_action_new"
+    app:showAsAction="ifRoom" />
 </menu>

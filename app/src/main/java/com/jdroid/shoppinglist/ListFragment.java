@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.jdroid.shoppinglist.data.ListContract.ListEntry;
 
@@ -82,7 +81,7 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Cursor cursor = mListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(position)) {
-                    Toast.makeText(getActivity(),cursor.getString(COL_LIST_ID),Toast.LENGTH_LONG).show();
+
                     Intent i = new Intent(getActivity(), DetailList.class);
                     i.putExtra("LIST_ID",cursor.getString(COL_LIST_ID));
                     i.putExtra("LIST_NAME",cursor.getString(COL_LIST_NAME));
@@ -116,9 +115,7 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
         getLoaderManager().restartLoader(LIST_LOADER, null, this);
     }
 
-    public void updateList(){
 
-    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
