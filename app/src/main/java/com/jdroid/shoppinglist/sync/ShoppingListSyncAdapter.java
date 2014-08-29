@@ -31,7 +31,8 @@ public class ShoppingListSyncAdapter extends AbstractThreadedSyncAdapter{
     private static final int WEATHER_NOTIFICATION_ID = 3004;
 
 
-    public static final long SYNC_INTERVAL = DAY_IN_MILLIS * 5;
+    //3 hours
+    public static final long SYNC_INTERVAL = 60*180;
     public static final long SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     ContentResolver mContentResolver;

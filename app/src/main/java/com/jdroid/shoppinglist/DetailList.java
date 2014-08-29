@@ -1,6 +1,8 @@
 package com.jdroid.shoppinglist;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -119,19 +121,10 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
                             ListContract.ItemEntry.CONTENT_URI, itemValues,
                             ListContract.ItemEntry._ID + "= ?",
                             new String[]{cursor.getString(COL_ITEM_ID)});
-                    Toast.makeText(getApplicationContext(), cursor.getInt(COL_ITEM_CHECK) + "", Toast.LENGTH_SHORT).show();
                     mCustomProgressView.setPercentage(getPercentage(count, list_size));
                     view.destroyDrawingCache();
                     view.setVisibility(ListView.INVISIBLE);
                     view.setVisibility(ListView.VISIBLE);
-
-
-
-
-                    /*int itemDeleteUri = getContentResolver().delete(
-                            ListContract.ItemEntry.CONTENT_URI,
-                            ListContract.ItemEntry._ID + "= ?",
-                            new String [] {cursor.getString(COL_ITEM_ID)});*/
 
                 }
 
@@ -187,37 +180,70 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 
-        ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar1);
+
 
         int id = item.getItemId();
         switch (id){
             case R.id.action_reset:
-                spinner.setVisibility(View.VISIBLE);
-                new Timer().schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                new ResetCheckTask().execute();
+                // Use the Builder class for convenient dialog construction
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(R.string.reset_list);
+                builder.setMessage(R.string.dialog_are_you_sure)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ProgressBar  spinner = (ProgressBar) findViewById(R.id.progressBar1);
+                                spinner.setVisibility(View.VISIBLE);
+                                new Timer().schedule(
+                                        new TimerTask() {
+                                            @Override
+                                            public void run() {
+                                                new ResetCheckTask().execute();
 
+                                            }
+                                        },
+                                        1000
+                                );
                             }
-                        },
-                        1000
-                );
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.create();
+                builder.show();
                 break;
+
             case R.id.action_delete:
+                // Use the Builder class for convenient dialog construction
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setTitle(R.string.delete_list);
+                builder2.setMessage(R.string.dialog_are_you_sure)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ProgressBar  spinner = (ProgressBar) findViewById(R.id.progressBar1);
+                                spinner.setVisibility(View.VISIBLE);
+                                new Timer().schedule(
+                                        new TimerTask() {
+                                            @Override
+                                            public void run() {
+                                                new DeleteListTask().execute();
 
-                spinner = (ProgressBar) findViewById(R.id.progressBar1);
-                spinner.setVisibility(View.VISIBLE);
-                new Timer().schedule(
-                        new TimerTask() {
-                            @Override
-                            public void run() {
-                                new DeleteListTask().execute();
-
+                                            }
+                                        },
+                                        1000
+                                );
                             }
-                        },
-                        1000
-                );
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder2.create();
+                builder2.show();
                 break;
         }
 

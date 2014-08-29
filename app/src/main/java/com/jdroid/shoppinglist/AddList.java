@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -13,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -98,26 +98,36 @@ public class AddList extends ActionBarActivity{
             EditText et = (EditText) findViewById(R.id.et_listTitle);
 
 
-            ContentValues listValues = new ContentValues();
-            listValues.put(ListContract.ListEntry.COLUMN_NAME, et.getText().toString());
-            listValues.put(ListContract.ListEntry.COLUMN_DATETEXT, sdt.format(now).toString());
+            if(!et.getText().toString().matches("")){
+                if(data_temp.size() > 0){
+                    ContentValues listValues = new ContentValues();
+                    listValues.put(ListContract.ListEntry.COLUMN_NAME, et.getText().toString());
+                    listValues.put(ListContract.ListEntry.COLUMN_DATETEXT, sdt.format(now).toString());
 
-            Uri listInsertUri = this.getContentResolver().insert(ListContract.ListEntry.CONTENT_URI, listValues);
+                    Uri listInsertUri = this.getContentResolver().insert(ListContract.ListEntry.CONTENT_URI, listValues);
 
-            for (int x = 0; x<data_temp.size();x++){
-                ContentValues itemValues = new ContentValues();
-                itemValues.put(ListContract.ItemEntry.COLUMN_LIST_KEY, Integer.valueOf(listInsertUri.getLastPathSegment()));
-                itemValues.put(ListContract.ItemEntry.COLUMN_NAME, data_temp.get(x).get("name"));
-                itemValues.put(ListContract.ItemEntry.COLUMN_QUANTITY, data_temp.get(x).get("quantity"));
-                itemValues.put(ListContract.ItemEntry.COLUMN_MEASURE, data_temp.get(x).get("measure"));
-                itemValues.put(ListContract.ItemEntry.COLUMN_CHECK,0);
-                this.getContentResolver().insert(ListContract.ItemEntry.CONTENT_URI, itemValues);
+                    for (int x = 0; x<data_temp.size();x++){
+                        ContentValues itemValues = new ContentValues();
+                        itemValues.put(ListContract.ItemEntry.COLUMN_LIST_KEY, Integer.valueOf(listInsertUri.getLastPathSegment()));
+                        itemValues.put(ListContract.ItemEntry.COLUMN_NAME, data_temp.get(x).get("name"));
+                        itemValues.put(ListContract.ItemEntry.COLUMN_QUANTITY, data_temp.get(x).get("quantity"));
+                        itemValues.put(ListContract.ItemEntry.COLUMN_MEASURE, data_temp.get(x).get("measure"));
+                        itemValues.put(ListContract.ItemEntry.COLUMN_CHECK,0);
+                        this.getContentResolver().insert(ListContract.ItemEntry.CONTENT_URI, itemValues);
 
+                    }
+
+                    Toast.makeText(this,R.string.added, Toast.LENGTH_SHORT).show();
+
+                    finish();
+                }else{
+                    Toast.makeText(this,R.string.empty_items, Toast.LENGTH_SHORT).show();
+                }
+            }else{
+                Toast.makeText(this, R.string.empty_list_name, Toast.LENGTH_SHORT).show();
             }
 
-            Toast.makeText(this,"Added!", Toast.LENGTH_SHORT).show();
 
-            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -128,13 +138,7 @@ public class AddList extends ActionBarActivity{
             case R.id.addElement_btn:
                 final Map<String, String> map = new HashMap<String, String>();
 
-                /*map.put("measure", "kg");
-                data_temp.add(map);
-                mAddListAdapter = new AddListAdapter(this,data_temp);
-                lv.setAdapter(mAddListAdapter);*/
-                // custom dialog
-                final DialogFragment dialog1 = new DialogFragment();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
                 LayoutInflater inflater = this.getLayoutInflater();
 
@@ -154,8 +158,6 @@ public class AddList extends ActionBarActivity{
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String[] measures = getResources().getStringArray(R.array.measures_types);
                         measure_selected = measures[i];
-                        Toast.makeText(getApplicationContext(),measure_selected + "", Toast.LENGTH_LONG).show();
-
                     }
 
                     @Override
@@ -167,33 +169,46 @@ public class AddList extends ActionBarActivity{
 
                 dialog.setView(view);
                 dialog.setTitle(R.string.insert_element_dialog_title);
-                dialog.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
-                        EditText et_name = (EditText) view.findViewById(R.id.et_name_element);
-                        map.put("name", et_name.getText().toString() );
-                        EditText et_quantity = (EditText) view.findViewById(R.id.et_quantity_element);
-                        map.put("quantity", et_quantity.getText().toString() );
-                        map.put("measure", measure_selected);
-                        data_temp.add(map);
-                        //mAddListAdapter = new AddListAdapter(getApplicationContext(),data_temp);
-                        //lv.setAdapter(mAddListAdapter);
-                        mAddListAdapter.notifyDataSetChanged();
+
+                dialog.setPositiveButton(R.string.add,null);
+                dialog.setNegativeButton(R.string.cancel, null);
 
 
+
+                final AlertDialog d = dialog.create();
+                d.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialogInterface) {
+                        Button b = d.getButton(AlertDialog.BUTTON_POSITIVE);
+
+
+
+                        b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // FIRE ZE MISSILES!
+
+                                EditText et_name = (EditText) view.findViewById(R.id.et_name_element);
+                                map.put("name", et_name.getText().toString() );
+                                EditText et_quantity = (EditText) view.findViewById(R.id.et_quantity_element);
+                                map.put("quantity", et_quantity.getText().toString() );
+                                map.put("measure", measure_selected);
+
+                                if ((!et_name.getText().toString().matches("")) && (!et_quantity.getText().toString().matches(""))){
+                                    data_temp.add(map);
+                                    mAddListAdapter.notifyDataSetChanged();
+                                    d.dismiss();
+
+                                }else{
+                                    Toast.makeText(getApplicationContext(), R.string.add_empty_fields, Toast.LENGTH_LONG).show();
+                                }
+
+                            }
+                        });
                     }
                 });
 
-                dialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // FIRE ZE MISSILES!
-                    }
-                });
-
-                dialog.create();
-
-
-                dialog.show();
+                d.show();
                 break;
             default:
                 break;
