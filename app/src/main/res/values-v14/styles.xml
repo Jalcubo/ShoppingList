@@ -1,15 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="actionBarStyle">@style/ActionBar.Solid.ShoppingList</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.ShoppingList</item>
     </style>
 
     <!-- ActionBar style -->
     <style name="ActionBar.Solid.ShoppingList"
         parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background">@drawable/actionbar_background</item>
+        <item name="android:background">@drawable/actionbar_background</item>
     </style>
 
 </resources>
