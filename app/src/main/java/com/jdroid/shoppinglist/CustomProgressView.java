@@ -84,13 +84,9 @@ public class CustomProgressView extends View {
 
         int i = (p*(getMeasuredWidth()-(2*(getMeasuredWidth()/6)))-3)/100;
 
-
         percentage = i;
-
-
-
-
     }
+
 }
 
 

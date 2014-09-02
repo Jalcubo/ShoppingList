@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jdroid.shoppinglist.data.ListContract;
@@ -44,6 +45,8 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     private int mPosition = ListView.INVALID_POSITION;
 
     private static String list_id = null;
+
+    private static TextView tv_percentage= null;
 
     String shareList;
 
@@ -90,6 +93,8 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
         mDetailListAdapter =new DetailListAdapter(this,null,0);
 
+
+
         ListView lv = (ListView) findViewById(R.id.lv_items);
         lv.setAdapter(mDetailListAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -122,6 +127,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
                             ListContract.ItemEntry._ID + "= ?",
                             new String[]{cursor.getString(COL_ITEM_ID)});
                     mCustomProgressView.setPercentage(getPercentage(count, list_size));
+                    tv_percentage.setText(getPercentage(count, list_size)+"%");
                     view.destroyDrawingCache();
                     view.setVisibility(ListView.INVISIBLE);
                     view.setVisibility(ListView.VISIBLE);
@@ -132,9 +138,10 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
         });
 
 
-
+        tv_percentage = (TextView) findViewById(R.id.percentage);
         mCustomProgressView = (CustomProgressView) findViewById(R.id.custom_progress_bar);
         mCustomProgressView.setPercentage(getPercentage(count,list_size));
+        tv_percentage.setText(getPercentage(count, list_size)+"%");
 
 
     }
@@ -151,6 +158,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
     public void  updateData(){
         mCustomProgressView.setPercentage(getPercentage(count,list_size));
+        tv_percentage.setText(getPercentage(count, list_size)+"%");
         mDetailListAdapter.notifyDataSetChanged();
     }
 
@@ -284,6 +292,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
         }
         mCustomProgressView.setPercentage(getPercentage(count,list_size));
+        tv_percentage.setText(getPercentage(count, list_size)+"%");
 
 
 
@@ -320,12 +329,13 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
             count = 0;
             mCustomProgressView.setPercentage(getPercentage(count, list_size));
+            tv_percentage.setText(getPercentage(count, list_size)+"%");
             mDetailListAdapter.notifyDataSetChanged();
             ProgressBar spinner = (ProgressBar) findViewById(R.id.progressBar1);
             spinner.setVisibility(View.GONE);
             onResume();
 
-            Toast.makeText(getApplicationContext(),"Reset!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Reset!", Toast.LENGTH_LONG).show();
 
         }
 
@@ -366,7 +376,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
 
         protected void onPostExecute(Integer i) {
-            Toast.makeText(getApplicationContext(),"Delete!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Delete!", Toast.LENGTH_LONG).show();
             finish();
         }
 

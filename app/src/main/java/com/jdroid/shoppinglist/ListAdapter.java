@@ -49,11 +49,10 @@ public class ListAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         viewHolder.nameView.setText(cursor.getString(ListFragment.COL_LIST_NAME));
-        viewHolder.datetextView.setText(cursor.getString(ListFragment.COL_LIST_DATE));
 
-        Log.e("AUX", viewHolder.toString());
-
-
+        String[] array_day = cursor.getString(ListFragment.COL_LIST_DATE).split("");
+        String date = array_day[7]+array_day[8]+"/"+array_day[5]+array_day[6]+"/"+array_day[1]+array_day[2]+array_day[3]+array_day[4];
+        viewHolder.datetextView.setText(date);
 
     }
 }

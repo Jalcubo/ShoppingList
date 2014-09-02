@@ -10,30 +10,28 @@
     android:background="@drawable/background"
     tools:context="com.jdroid.shoppinglist.AddList">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <EditText
+        android:layout_weight="0"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:inputType="textCapSentences"
+        android:id="@+id/et_listTitle"
+        android:layout_gravity="center_horizontal"
+        android:hint="List Title"
+        android:fontFamily="sans-serif"
+        android:textStyle="italic"
+        android:textSize="30sp"
+        android:gravity="center"/>
 
-        <EditText
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapSentences"
-            android:id="@+id/et_listTitle"
-            android:layout_gravity="center_horizontal"
-            android:hint="List Title" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/addElement_btn"
-            android:id="@+id/addElement_btn"
-            android:onClick="onClick"/>
-
-
-
-        </LinearLayout>
+    <ListView
+        android:id="@+id/temp_listview"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        />
 
     <TextView
         android:id="@+id/temp_empty_list_view"
@@ -41,15 +39,24 @@
         android:layout_height="fill_parent"
         android:gravity="center"
         android:text="The list is empty"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="italic"
+        android:textSize="30sp"
+        android:layout_weight="1"
         android:visibility="gone"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_dark"
+        android:text="@string/addElement_btn"
+        android:textColor="@android:color/white"
+        android:layout_weight="0"
+        android:id="@+id/addElement_btn"
+        android:onClick="onClick"/>
 
 
-    <ListView
-        android:id="@+id/temp_listview"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        />
+
 
 </LinearLayout>

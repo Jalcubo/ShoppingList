@@ -8,15 +8,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="italic"
+        android:textSize="30sp"
         android:id="@+id/add_item_list_name" />
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" x"/>
-    <TextView
+        android:layout_marginLeft="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:textStyle="bold"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20sp"
         android:id="@+id/add_item_list_quantity" />
     <TextView
         android:layout_width="wrap_content"
@@ -27,10 +31,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="20sp"
         android:id="@+id/add_item_list_measure" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical" >
 
         <ImageButton
             android:layout_width="wrap_content"

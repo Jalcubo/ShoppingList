@@ -8,10 +8,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:fontFamily="sans-serif-condensed"
+        android:textStyle="italic"
+        android:textSize="40sp"
         android:id="@+id/list_item_list_text" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
+        android:textColor="@android:color/tab_indicator_text"
+        android:textSize="20sp"
         android:id="@+id/list_item_list_datetext" />
 </LinearLayout>
