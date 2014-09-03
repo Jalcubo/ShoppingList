@@ -34,13 +34,6 @@ public class Main_Activity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_add_list) {
-            /*
-            Toast.makeText(this,"Holaaaaaaa!", Toast.LENGTH_SHORT).show();
-            ContentValues listValues = new ContentValues();
-            listValues.put(ListContract.ListEntry.COLUMN_NAME, "lista de la compra2");
-            listValues.put(ListContract.ListEntry.COLUMN_DATETEXT, "20140816");
-
-            Uri listInsertUri = this.getContentResolver().insert(ListContract.ListEntry.CONTENT_URI, listValues);*/
 
             Intent i = new Intent(this,AddList.class);
             startActivity(i);

@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center"
-        android:text="List view is empty"
+        android:text="There aren't list, create a new one!"
         android:fontFamily="sans-serif-condensed"
         android:textStyle="italic"
         android:textSize="30sp"

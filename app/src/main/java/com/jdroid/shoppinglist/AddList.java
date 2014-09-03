@@ -117,6 +117,8 @@ public class AddList extends ActionBarActivity{
 
                     }
 
+                    data_temp = new ArrayList<Map<String, String>>();
+
                     Toast.makeText(this,R.string.added, Toast.LENGTH_SHORT).show();
 
                     finish();

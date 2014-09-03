@@ -86,12 +86,6 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
                     i.putExtra("LIST_ID",cursor.getString(COL_LIST_ID));
                     i.putExtra("LIST_NAME",cursor.getString(COL_LIST_NAME));
                     startActivity(i);
-                    /*
-                    int listInsertUri = getActivity().getContentResolver().delete(
-                            ListEntry.CONTENT_URI,
-                            ListEntry._ID + "= ?",
-                            new String [] {cursor.getString(COL_LIST_ID)});*/
-
 
                     onResume();
                 }
