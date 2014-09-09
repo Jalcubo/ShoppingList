@@ -86,7 +86,7 @@ public class ShoppingListSyncAdapter extends AbstractThreadedSyncAdapter{
         long lastNotification = prefs.getLong(lastNotificationKey, 0);
         boolean timeToNotify = (System.currentTimeMillis() - lastNotification >= DAY_IN_MILLIS);
 
-        if (notificationsEnabled && timeToNotify) {
+        if (notificationsEnabled  && timeToNotify ) {
 
 
             int iconId = R.drawable.logo;

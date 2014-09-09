@@ -33,6 +33,8 @@
     <string name="pref_enable_notifications_true">Enabled</string>
     <string name="pref_enable_notifications_false">Not Enabled</string>
     <string name="pref_enable_notifications_default" translatable="false">true</string>
+
+
     <string name="dialog_are_you_sure">Are you sure?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -42,6 +44,7 @@
     <string name="added">Added!</string>
     <string name="empty_items">The list can\'t be empty</string>
     <string name="empty_list_name">The list name can\'t be empty</string>
+    <string name="title_activity_settings">Settings</string>
 
 
 </resources>

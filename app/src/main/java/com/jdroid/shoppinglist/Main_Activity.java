@@ -1,10 +1,13 @@
 package com.jdroid.shoppinglist;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.jdroid.shoppinglist.sync.ShoppingListSyncAdapter;
 
@@ -37,9 +40,12 @@ public class Main_Activity extends ActionBarActivity {
 
             Intent i = new Intent(this,AddList.class);
             startActivity(i);
+            return true;
+        }
+        if (id == R.id.action_settings) {
 
-
-
+            Intent i = new Intent(this,SettingsActivity.class);
+            startActivity(i);
             return true;
         }
         return super.onOptionsItemSelected(item);

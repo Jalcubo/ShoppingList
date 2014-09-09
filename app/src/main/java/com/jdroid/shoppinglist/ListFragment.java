@@ -28,8 +28,10 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
     private static final int LIST_LOADER = 0;
     private ListAdapter mListAdapter;
 
+    private ListView listView;
+
     private final String LOG_TAG = getClass().getSimpleName();
-    private int mPosition = ListView.INVALID_POSITION;
+
 
 
     private static final String[] LIST_COLUMNS = {
@@ -73,7 +75,7 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
 
         View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_list);
+        listView = (ListView) rootView.findViewById(R.id.listview_list);
         listView.setEmptyView( rootView.findViewById(R.id.empty_list_view) );
         listView.setAdapter(mListAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,13 +87,12 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
                     Intent i = new Intent(getActivity(), DetailList.class);
                     i.putExtra("LIST_ID",cursor.getString(COL_LIST_ID));
                     i.putExtra("LIST_NAME",cursor.getString(COL_LIST_NAME));
-                    startActivity(i);
 
+                    startActivity(i);
                     onResume();
                 }
             }
         });
-
 
 
 
@@ -100,6 +101,7 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+
         super.onSaveInstanceState(outState);
     }
 
@@ -135,6 +137,7 @@ public class ListFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mListAdapter.swapCursor(data);
+
     }
 
     @Override

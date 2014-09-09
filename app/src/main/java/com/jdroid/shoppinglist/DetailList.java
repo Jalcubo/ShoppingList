@@ -42,7 +42,10 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     private static final int DETAIL_LOADER = 1;
 
     private final String LOG_TAG = getClass().getSimpleName();
+
+    private static final String SELECTED_KEY = "selected_position";
     private int mPosition = ListView.INVALID_POSITION;
+    private ListView lv;
 
     private static String list_id = null;
 
@@ -95,7 +98,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
 
 
-        ListView lv = (ListView) findViewById(R.id.lv_items);
+        lv = (ListView) findViewById(R.id.lv_items);
         lv.setAdapter(mDetailListAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -128,6 +131,7 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
                             new String[]{cursor.getString(COL_ITEM_ID)});
                     mCustomProgressView.setPercentage(getPercentage(count, list_size));
                     tv_percentage.setText(getPercentage(count, list_size)+"%");
+                    mPosition = position;
                     view.destroyDrawingCache();
                     view.setVisibility(ListView.INVISIBLE);
                     view.setVisibility(ListView.VISIBLE);
@@ -136,6 +140,11 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
             }
         });
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
 
 
         tv_percentage = (TextView) findViewById(R.id.percentage);
@@ -153,8 +162,13 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     }
 
 
-
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        super.onSaveInstanceState(outState);
+    }
 
     public void  updateData(){
         mCustomProgressView.setPercentage(getPercentage(count,list_size));
@@ -277,6 +291,18 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mDetailListAdapter.swapCursor(data);
+
+        if (mPosition != ListView.INVALID_POSITION) {
+            // If we don't need to restart the loader, and there's a desired position to restore
+            // to, do so now.
+            //mListView.smoothScrollToPosition(mPosition);
+            if (lv != null ) {
+                lv.setSelection(mPosition);
+            } else {
+                Log.d(LOG_TAG, "Share Action Provider is null?");
+            }
+        }
+
         list_size = data.getCount();
         count = 0;
         shareList= "   " + getIntent().getStringExtra("LIST_NAME") + "\r\n------------------ \r\n";

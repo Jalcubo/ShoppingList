@@ -34,6 +34,10 @@ public class AddList extends ActionBarActivity{
 
     public static ListView lv;
 
+    private static final String SELECTED_KEY = "selected_position";
+    private int mPosition = ListView.INVALID_POSITION;
+
+
     public String measure_selected;
 
 
@@ -59,6 +63,7 @@ public class AddList extends ActionBarActivity{
 
                     data_temp.remove(position);
                     mAddListAdapter.notifyDataSetChanged();
+                    lv.smoothScrollToPosition(lv.getScrollBarSize());
 
                 }
 
@@ -71,10 +76,25 @@ public class AddList extends ActionBarActivity{
         mAddListAdapter = new AddListAdapter(this,data_temp);
         lv.setAdapter(mAddListAdapter);
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
+            // The listview probably hasn't even been populated yet.  Actually perform the
+            // swapout in onLoadFinished.
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
+
 
     }
 
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        if (mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -199,6 +219,7 @@ public class AddList extends ActionBarActivity{
                                 if ((!et_name.getText().toString().matches("")) && (!et_quantity.getText().toString().matches(""))){
                                     data_temp.add(map);
                                     mAddListAdapter.notifyDataSetChanged();
+                                    lv.smoothScrollToPosition(lv.getScrollBarSize());
                                     d.dismiss();
 
                                 }else{
@@ -216,6 +237,8 @@ public class AddList extends ActionBarActivity{
                 break;
         }
     }
+
+
 
 
 
