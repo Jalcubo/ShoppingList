@@ -141,10 +141,6 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
             }
         });
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
-
-            mPosition = savedInstanceState.getInt(SELECTED_KEY);
-        }
 
 
         tv_percentage = (TextView) findViewById(R.id.percentage);
@@ -164,10 +160,19 @@ public class DetailList extends ActionBarActivity implements LoaderManager.Loade
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if (mPosition != ListView.INVALID_POSITION) {
-            outState.putInt(SELECTED_KEY, mPosition);
-        }
+
+        outState.putInt(SELECTED_KEY, lv.getFirstVisiblePosition());
+
+
         super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+       mPosition =(savedInstanceState.getInt(SELECTED_KEY));
     }
 
     public void  updateData(){
